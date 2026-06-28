@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kochprojekt 6C – Gesamtschule Wanne-Eickel</title>
+    <style>
+        :root {
+            --schul-blau: #1a3c6d;
+            --schul-gold: #c9a84c;
+            --hintergrund: #f9f6f0;
+            --karte-bg: #ffffff;
+            --text: #2c2c2c;
+            --text-hell: #555;
+            --akzent: #e07b39;
+            --erfolg: #5a8f3d;
+            --rand: #e0d9cc;
+            --schatten: 0 4px 20px rgba(0, 0, 0, 0.07);
+            --radius: 16px;
+            --radius-klein: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            background-color: var(--hintergrund);
+            color: var(--text);
+            line-height: 1.7;
+            background-image:
+                radial-gradient(ellipse at 15% 10%, rgba(201, 168, 76, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 85% 90%, rgba(26, 60, 109, 0.04) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: linear-gradient(160deg, #152d50 0%, #1a3c6d 30%, #1f4d8c 100%);
+            color: #fff;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 24px;
+        }
+
+        .logo-bereich {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--schul-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--schul-blau);
+            flex-shrink: 0;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+            letter-spacing: -1px;
+        }
+
+        .header-titel h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+        .header-titel .untertitel {
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0.85;
+            color: #c9a84c;
+            letter-spacing: 0.5px;
+        }
+
+        .header-badge {
+            margin-left: auto;
+            background: var(--akzent);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+            box-shadow: 0 2px 12px rgba(224, 123, 57, 0.4);
+        }
+
+        /* ========== MAIN ========== */
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 20px 60px;
+        }
+
+        /* ========== KARTEN ========== */
+        .karte {
+            background: var(--karte-bg);
+            border-radius: var(--radius);
+            padding: 32px 30px;
+            margin-bottom: 28px;
+            box-shadow: var(--schatten);
+            border: 1px solid var(--rand);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .karte:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .karte h2 {
+            font-size: 1.6rem;
+            color: var(--schul-blau);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.2px;
+        }
+        .karte h2 .icon {
+            font-size: 1.5rem;
+        }
+        .karte .karte-untertitel {
+            font-size: 0.9rem;
+            color: var(--text-hell);
+            margin-bottom: 18px;
+            font-style: italic;
+        }
+        .karte h3 {
+            font-size: 1.2rem;
+            color: var(--schul-blau);
+            margin: 20px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px dashed #e8e2d4;
+        }
+        .karte p {
+            margin-bottom: 10px;
+            color: var(--text-hell);
+        }
+        .karte ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .karte ul li {
+            padding: 5px 0 5px 24px;
+            position: relative;
+            color: var(--text-hell);
+        }
+        .karte ul li::before {
+            content: "•";
+            color: var(--schul-gold);
+            font-weight: bold;
+            font-size: 1.3rem;
+            position: absolute;
+            left: 2px;
+            top: 2px;
+        }
+
+        /* ========== INFO-GRID ========== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 14px;
+        }
+        @media (max-width: 650px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-box {
+            background: #fdfcf8;
+            border: 1px solid var(--rand);
+            border-radius: var(--radius-klein);
+            padding: 16px 18px;
+            text-align: center;
+        }
+        .info-box .info-zahl {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--schul-blau);
+        }
+        .info-box .info-label {
+            font-size: 0.85rem;
+            color: var(--text-hell);
+            margin-top: 2px;
+        }
+
+        /* ========== REZEPT-KARTEN ========== */
+        .rezepte-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            margin-top: 18px;
+        }
+
+        .rezept-karte {
+            background: #fffdf9;
+            border: 1px solid var(--rand);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+        .rezept-karte:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .rezept-bild {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+        }
+        .rezept-bild.r1 {
+            background: linear-gradient(135deg, #fde8c8, #f9d59b);
+        }
+        .rezept-bild.r2 {
+            background: linear-gradient(135deg, #ffe0d3, #fdbca0);
+        }
+        .rezept-bild.r3 {
+            background: linear-gradient(135deg, #e8f5e1, #c5e6b5);
+        }
+        .rezept-bild.r4 {
+            background: linear-gradient(135deg, #fdf2d0, #fae38b);
+        }
+        .rezept-bild.r5 {
+            background: linear-gradient(135deg, #ffe8e0, #ffc9b5);
+        }
+        .rezept-bild.r6 {
+            background: linear-gradient(135deg, #e3f0fa, #b8d6f2);
+        }
+
+        .rezept-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--akzent);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .rezept-inhalt {
+            padding: 20px 18px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .rezept-inhalt h3 {
+            font-size: 1.25rem;
+            color: var(--schul-blau);
+            margin: 0 0 4px;
+            border: none;
+            padding: 0;
+        }
+        .rezept-inhalt .rezept-dauer {
+            font-size: 0.8rem;
+            color: var(--text-hell);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rezept-inhalt .zutaten-liste {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 14px;
+            font-size: 0.9rem;
+            color: var(--text-hell);
+            flex: 1;
+        }
+        .rezept-inhalt .zutaten-liste li {
+            padding: 2px 0 2px 18px;
+            position: relative;
+        }
+        .rezept-inhalt .zutaten-liste li::before {
+            content: "🥄";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 0.7rem;
+        }
+        .rezept-inhalt .zubereitung {
+            font-size: 0.85rem;
+            color: #444;
+            background: #fafaf6;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--erfolg);
+            line-height: 1.5;
+        }
+        .rezept-inhalt .zubereitung strong {
+            color: var(--erfolg);
+        }
+
+        /* ========== PROJEKT-HIGHLIGHT ========== */
+        .highlight-banner {
+            background: linear-gradient(135deg, #fff8e7, #fef3d6);
+            border: 2px solid var(--schul-gold);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            color: #7a5f1f;
+            font-size: 1rem;
+            letter-spacing: 0.2px;
+        }
+        .highlight-banner .gross {
+            font-size: 1.4rem;
+            display: block;
+            color: var(--schul-blau);
+            margin-bottom: 4px;
+        }
+
+        /* ========== LEHRER-HINWEIS ========== */
+        .lehrer-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #eef4fb;
+            border-radius: var(--radius-klein);
+            padding: 16px 20px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--schul-blau);
+            border: 1px solid #cdddec;
+        }
+        .lehrer-box .lehrer-icon {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: #1a2a40;
+            color: #bcc5d0;
+            text-align: center;
+            padding: 20px 20px;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            margin-top: 10px;
+        }
+        .footer span {
+            color: var(--schul-gold);
+            font-weight: 600;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 700px) {
+            .header-inner {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 16px;
+            }
+            .header-badge {
+                margin-left: 0;
+                font-size: 0.8rem;
+                padding: 6px 14px;
+            }
+            .header-titel h1 {
+                font-size: 1.1rem;
+            }
+            .karte {
+                padding: 20px 16px;
+            }
+            .karte h2 {
+                font-size: 1.3rem;
+            }
+            .rezepte-grid {
+                grid-template-columns: 1fr;
+            }
+            .rezept-bild {
+                height: 130px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-bereich">
+                <div class="logo-icon">WE</div>
+                <div class="header-titel">
+                    <h1>Gesamtschule Wanne-Eickel</h1>
+                    <div class="untertitel">Städtische Gesamtschule · Herne</div>
+                </div>
+            </div>
+            <div class="header-badge">📖 Klasse 6C</div>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN ==================== -->
+    <main class="main-container">
+
+        <!-- ========== 1. SCHUL-INFOS ========== -->
+        <section class="karte" id="schul-infos">
+            <h2><span class="icon">🏫</span> Über unsere Schule</h2>
+            <p class="karte-untertitel">Gesamtschule Wanne-Eickel – Lernen mit Vielfalt und Gemeinschaft</p>
+            <p>
+                Die <strong>Gesamtschule Wanne-Eickel</strong> liegt im Herzen von Herne-Wanne und ist eine
+                städtische Gesamtschule, die alle Schulabschlüsse unter einem Dach anbietet – vom Hauptschulabschluss
+                über die Fachoberschulreife bis zum Abitur. Unsere Schule steht für <strong>Chancengleichheit,
+                    Respekt und gemeinsames Lernen</strong> in einer bunten und lebendigen Schulgemeinschaft.
+            </p>
+            <p>
+                Mit rund <strong>1.200 Schülerinnen und Schülern</strong> sowie über 100 engagierten Lehrkräften
+                bieten wir ein breites Fächerangebot, moderne Fachräume, eine große Sporthalle, eine Schulbibliothek
+                und eine Mensa mit frisch zubereiteten Mahlzeiten. Besonders stolz sind wir auf unsere
+                <strong>Projektwochen</strong>, in denen klassenübergreifend kreative und praxisnahe Projekte
+                umgesetzt werden – so wie das Kochprojekt der Klasse 6C!
+            </p>
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="info-zahl">🏫 1.200</div>
+                    <div class="info-label">Schülerinnen &amp; Schüler</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-zahl">👩‍🏫 100+</div>
+                    <div class="info-label">Lehrkräfte</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-zahl">🎓 Alle</div>
+                    <div class="info-label">Abschlüsse möglich</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-zahl">🍎 Mensa</div>
+                    <div class="info-label">Frisches Essen täglich</div>
+                </div>
+            </div>
+            <div class="lehrer-box">
+                <span class="lehrer-icon">👩‍🏫</span>
+                <span><strong>Schulleitung:</strong> Frau Dr. Meier &nbsp;|&nbsp; <strong>Stellvertretung:</strong> Herr Schröder &nbsp;|&nbsp; <strong>Standort:</strong> Stöckstraße 41, 44649 Herne</span>
+            </div>
+        </section>
+
+        <!-- ========== 2. KOCHPROJEKT 6C ========== -->
+        <section class="karte" id="kochprojekt">
+            <h2><span class="icon">👨‍🍳</span> Das Kochprojekt der Klasse 6C</h2>
+            <p class="karte-untertitel">Gemeinsam kochen, lernen und genießen!</p>
+            <p>
+                Im Rahmen unserer diesjährigen <strong>Projektwoche</strong> hat sich die <strong>Klasse 6C</strong>
+                unter der Leitung von <strong>Frau Schulte</strong> und <strong>Herrn Yilmaz</strong> einem ganz
+                besonderen Thema gewidmet: dem <strong>Kochen und Backen</strong>. Unter dem Motto
+                <em>„Selber machen schmeckt am besten!“</em> haben die Schülerinnen und Schüler eine Woche lang
+                geschnippelt, gerührt, gebacken und probiert.
+            </p>
+            <div class="highlight-banner">
+                <span class="gross">🥗👨‍🍳🍰 „Selber machen schmeckt am besten!“ 🍕🥗🧁</span>
+                Projektwoche der 6C · 23. – 27. Juni 2026 · Schulküche &amp; Mensa
+            </div>
+            <p>
+                Ziel des Projekts war es, den Kindern <strong>gesunde Ernährung</strong> näherzubringen, den
+                <strong>Umgang mit Lebensmitteln</strong> zu schulen und natürlich jede Menge Spaß in der
+                Gemeinschaft zu haben. Jedes Kind hat ein eigenes kleines Rezeptheft gestaltet und alle Gerichte
+                wurden gemeinsam verkostet. Die schönsten und leckersten Rezepte stellen wir hier vor – zum
+                Nachkochen für zu Hause!
+            </p>
+            <h3>🎯 Ziele des Kochprojekts</h3>
+            <ul>
+                <li><strong>Ernährungsbewusstsein</strong> stärken – Was ist gesund? Woher kommen unsere Lebensmittel?</li>
+                <li><strong>Teamarbeit</strong> fördern – Zusammen planen, einkaufen, kochen und aufräumen</li>
+                <li><strong>Praktische Fähigkeiten</strong> erlernen – Schneidetechniken, Herdnutzung, Hygiene</li>
+                <li><strong>Kreativität</strong> ausleben – Eigene Rezeptideen entwickeln und anrichten</li>
+                <li><strong>Kulturelle Vielfalt</strong> entdecken – Gerichte aus verschiedenen Ländern probieren</li>
+            </ul>
+        </section>
+
+        <!-- ========== 3. DIE REZEPTE ========== -->
+        <section class="karte" id="rezepte">
+            <h2><span class="icon">📜</span> Unsere besten Rezepte</h2>
+            <p class="karte-untertitel">Erprobt von der 6C – lecker, einfach &amp; für zu Hause geeignet!</p>
+
+            <div class="rezepte-grid">
+
+                <!-- Rezept 1: Pfannkuchen -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r1">
+                        🥞
+                        <span class="rezept-badge">⭐ Beliebt</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Fluffige Pfannkuchen</h3>
+                        <div class="rezept-dauer">⏱️ ca. 25 Min. &nbsp;|&nbsp; 🔥 einfach</div>
+                        <ul class="zutaten-liste">
+                            <li>250 g Mehl</li>
+                            <li>2 Eier</li>
+                            <li>400 ml Milch</li>
+                            <li>1 Prise Salz</li>
+                            <li>2 EL Zucker</li>
+                            <li>Butter zum Braten</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Mehl, Eier, Milch, Salz und Zucker zu einem glatten Teig verrühren.
+                            Pfanne mit Butter erhitzen, eine Kelle Teig hineingeben und von beiden Seiten goldbraun backen.
+                            Mit Apfelmus, Zucker oder Schokocreme servieren.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezept 2: Nudelsalat -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r2">
+                        🥗
+                        <span class="rezept-badge">Herzhaft</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Bunter Nudelsalat</h3>
+                        <div class="rezept-dauer">⏱️ ca. 30 Min. &nbsp;|&nbsp; 🔥 einfach</div>
+                        <ul class="zutaten-liste">
+                            <li>300 g Nudeln (Fusilli)</li>
+                            <li>1 rote Paprika</li>
+                            <li>1 Gurke</li>
+                            <li>200 g Mais (Dose)</li>
+                            <li>150 g Joghurt</li>
+                            <li>3 EL Mayonnaise, Salz, Pfeffer</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Nudeln kochen, abkühlen lassen. Paprika und Gurke würfeln, mit
+                            Mais und Nudeln mischen. Joghurt, Mayo und Gewürze verrühren, unterheben. Mindestens 1 Stunde
+                            ziehen lassen.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezept 3: Obstsalat -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r3">
+                        🍓
+                        <span class="rezept-badge">Gesund</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Regenbogen-Obstsalat</h3>
+                        <div class="rezept-dauer">⏱️ ca. 15 Min. &nbsp;|&nbsp; 🔥 sehr einfach</div>
+                        <ul class="zutaten-liste">
+                            <li>2 Äpfel</li>
+                            <li>2 Bananen</li>
+                            <li>200 g Erdbeeren</li>
+                            <li>1 Handvoll Weintrauben</li>
+                            <li>Saft einer Orange</li>
+                            <li>1 TL Honig (optional)</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Alles Obst waschen und klein schneiden. In einer großen Schüssel
+                            mischen, Orangensaft und Honig darübergeben. Sofort servieren oder kühl stellen. Schmeckt
+                            auch super mit Joghurt!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezept 4: Pizza -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r4">
+                        🍕
+                        <span class="rezept-badge">Party-Hit</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Mini-Pizza selbst gemacht</h3>
+                        <div class="rezept-dauer">⏱️ ca. 40 Min. &nbsp;|&nbsp; 🔥 mittel</div>
+                        <ul class="zutaten-liste">
+                            <li>1 Pck. Pizzateig (oder selbst gemacht)</li>
+                            <li>200 ml passierte Tomaten</li>
+                            <li>200 g geriebener Käse</li>
+                            <li>Belag nach Wahl: Salami, Paprika, Pilze</li>
+                            <li>Oregano, Salz, Olivenöl</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Teig ausrollen, in kleine Kreise ausstechen. Mit Tomatensoße
+                            bestreichen, belegen und mit Käse bestreuen. Bei 200 °C Ober-/Unterhitze ca. 12–15 Min.
+                            backen. Warm genießen!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezept 5: Muffins -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r5">
+                        🧁
+                        <span class="rezept-badge">Süß</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Schoko-Muffins</h3>
+                        <div class="rezept-dauer">⏱️ ca. 35 Min. &nbsp;|&nbsp; 🔥 mittel</div>
+                        <ul class="zutaten-liste">
+                            <li>200 g Mehl</li>
+                            <li>100 g Zucker</li>
+                            <li>2 EL Kakaopulver</li>
+                            <li>1 Pck. Backpulver</li>
+                            <li>2 Eier, 100 ml Öl</li>
+                            <li>150 ml Milch, Schokostückchen</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Alle Zutaten verrühren, in Muffinförmchen füllen. Bei 180 °C
+                            ca. 20 Min. backen. Mit Zuckerguss oder Puderzucker verzieren. Ergibt ca. 12 Stück.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezept 6: Wraps -->
+                <div class="rezept-karte">
+                    <div class="rezept-bild r6">
+                        🌯
+                        <span class="rezept-badge">Schnell</span>
+                    </div>
+                    <div class="rezept-inhalt">
+                        <h3>Gemüse-Wraps</h3>
+                        <div class="rezept-dauer">⏱️ ca. 15 Min. &nbsp;|&nbsp; 🔥 sehr einfach</div>
+                        <ul class="zutaten-liste">
+                            <li>4 Weizentortillas</li>
+                            <li>200 g Frischkäse</li>
+                            <li>1 Salatgurke</li>
+                            <li>2 Karotten</li>
+                            <li>Salatblätter</li>
+                            <li>Salz, Pfeffer, Kräuter</li>
+                        </ul>
+                        <div class="zubereitung">
+                            <strong>Zubereitung:</strong> Tortillas mit Frischkäse bestreichen. Gurke und Karotten in
+                            dünne Streifen schneiden, mit Salat darauflegen. Würzen, fest einrollen und in mundgerechte
+                            Stücke schneiden. Perfekt für die Pause!
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /rezepte-grid -->
+
+            <div class="highlight-banner" style="margin-top: 24px;">
+                <span class="gross">👩‍🍳 Viel Spaß beim Nachkochen! 👨‍🍳</span>
+                Alle Rezepte wurden von der Klasse 6C getestet und für „sehr lecker“ befunden! 😋
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <p>
+            © 2026 <span>Gesamtschule Wanne-Eickel</span> · Klasse <span>6C</span> · Kochprojekt
+            &nbsp;|&nbsp; Stöckstraße 41, 44649 Herne &nbsp;|&nbsp; 📞 02325 123456
+        </p>
+        <p style="margin-top: 4px; font-size: 0.8rem;">
+            🍎 „Gesunde Ernährung beginnt mit Neugier und einem Löffel!“ – Die 6C
+        </p>
+    </footer>
+
+</body>
+</html>
